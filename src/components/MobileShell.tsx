@@ -36,7 +36,7 @@ export function MobileShell({ children }: { children: ReactNode }) {
               return (
                 <li key={to} className="flex-1">
                   <Link
-                    to={to}
+                    to={to as "/"}
                     className={`flex flex-col items-center gap-0.5 rounded-full py-1.5 text-[10px] font-medium transition-all ${
                       active ? "text-background" : "text-foreground/60 hover:text-foreground"
                     }`}
