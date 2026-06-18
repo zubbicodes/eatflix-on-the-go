@@ -14,6 +14,7 @@ import { Route as PwaRouteImport } from './routes/pwa'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as JourneyRouteImport } from './routes/journey'
+import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as BenefitsRouteImport } from './routes/benefits'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExperiencesIndexRouteImport } from './routes/experiences.index'
@@ -44,6 +45,11 @@ const JourneyRoute = JourneyRouteImport.update({
   path: '/journey',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExperiencesRoute = ExperiencesRouteImport.update({
+  id: '/experiences',
+  path: '/experiences',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BenefitsRoute = BenefitsRouteImport.update({
   id: '/benefits',
   path: '/benefits',
@@ -55,19 +61,20 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperiencesIndexRoute = ExperiencesIndexRouteImport.update({
-  id: '/experiences/',
-  path: '/experiences/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => ExperiencesRoute,
 } as any)
 const ExperiencesSlugRoute = ExperiencesSlugRouteImport.update({
-  id: '/experiences/$slug',
-  path: '/experiences/$slug',
-  getParentRoute: () => rootRouteImport,
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ExperiencesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/benefits': typeof BenefitsRoute
+  '/experiences': typeof ExperiencesRouteWithChildren
   '/journey': typeof JourneyRoute
   '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
@@ -91,6 +98,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/benefits': typeof BenefitsRoute
+  '/experiences': typeof ExperiencesRouteWithChildren
   '/journey': typeof JourneyRoute
   '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
@@ -104,6 +112,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/benefits'
+    | '/experiences'
     | '/journey'
     | '/notifications'
     | '/profile'
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/benefits'
+    | '/experiences'
     | '/journey'
     | '/notifications'
     | '/profile'
@@ -138,13 +148,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BenefitsRoute: typeof BenefitsRoute
+  ExperiencesRoute: typeof ExperiencesRouteWithChildren
   JourneyRoute: typeof JourneyRoute
   NotificationsRoute: typeof NotificationsRoute
   ProfileRoute: typeof ProfileRoute
   PwaRoute: typeof PwaRoute
   TicketsRoute: typeof TicketsRoute
-  ExperiencesSlugRoute: typeof ExperiencesSlugRoute
-  ExperiencesIndexRoute: typeof ExperiencesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -184,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experiences': {
+      id: '/experiences'
+      path: '/experiences'
+      fullPath: '/experiences'
+      preLoaderRoute: typeof ExperiencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/benefits': {
       id: '/benefits'
       path: '/benefits'
@@ -200,31 +216,44 @@ declare module '@tanstack/react-router' {
     }
     '/experiences/': {
       id: '/experiences/'
-      path: '/experiences'
+      path: '/'
       fullPath: '/experiences/'
       preLoaderRoute: typeof ExperiencesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ExperiencesRoute
     }
     '/experiences/$slug': {
       id: '/experiences/$slug'
-      path: '/experiences/$slug'
+      path: '/$slug'
       fullPath: '/experiences/$slug'
       preLoaderRoute: typeof ExperiencesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ExperiencesRoute
     }
   }
 }
 
+interface ExperiencesRouteChildren {
+  ExperiencesSlugRoute: typeof ExperiencesSlugRoute
+  ExperiencesIndexRoute: typeof ExperiencesIndexRoute
+}
+
+const ExperiencesRouteChildren: ExperiencesRouteChildren = {
+  ExperiencesSlugRoute: ExperiencesSlugRoute,
+  ExperiencesIndexRoute: ExperiencesIndexRoute,
+}
+
+const ExperiencesRouteWithChildren = ExperiencesRoute._addFileChildren(
+  ExperiencesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BenefitsRoute: BenefitsRoute,
+  ExperiencesRoute: ExperiencesRouteWithChildren,
   JourneyRoute: JourneyRoute,
   NotificationsRoute: NotificationsRoute,
   ProfileRoute: ProfileRoute,
   PwaRoute: PwaRoute,
   TicketsRoute: TicketsRoute,
-  ExperiencesSlugRoute: ExperiencesSlugRoute,
-  ExperiencesIndexRoute: ExperiencesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
