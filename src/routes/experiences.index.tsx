@@ -3,7 +3,7 @@ import { Calendar, Clock, Utensils, Wine } from "lucide-react";
 import { experiences } from "@/lib/events";
 import { ScreenHeader } from "@/components/MobileShell";
 
-export const Route = createFileRoute("/experiences")({
+export const Route = createFileRoute("/experiences/")({
   head: () => ({
     meta: [
       { title: "Experiences — EatFlix Cinema" },

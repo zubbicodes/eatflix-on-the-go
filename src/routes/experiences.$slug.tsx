@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, MapPin, Users, Heart, Share2, Utensils, Wine, Sparkles, ChevronRight } from "lucide-react";
-import { getExperience, experiences } from "@/lib/events";
+import { getExperience, experiences, type Experience } from "@/lib/events";
 
 export const Route = createFileRoute("/experiences/$slug")({
   loader: ({ params }) => {
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/experiences/$slug")({
 });
 
 function ExperienceDetail() {
-  const { exp } = Route.useLoaderData();
+  const { exp } = Route.useLoaderData() as { exp: Experience };
   const related = experiences.filter((e) => e.slug !== exp.slug).slice(0, 3);
 
   return (
