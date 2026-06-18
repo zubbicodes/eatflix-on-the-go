@@ -1,0 +1,14 @@
+.git
+.lovable
+.tanstack
+.vinxi
+.nitro
+.output
+.wrangler
+.dev.vars
+dist
+dist-ssr
+node_modules
+logs
+*.log
+*.local
