@@ -2,13 +2,13 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Film, Ticket, Bell, User } from "lucide-react";
 import type { ReactNode } from "react";
 
-const nav = [
+const nav: { to: string; label: string; icon: typeof Home; exact?: boolean }[] = [
   { to: "/", label: "Home", icon: Home, exact: true },
   { to: "/experiences", label: "Experiences", icon: Film },
   { to: "/tickets", label: "Tickets", icon: Ticket },
   { to: "/notifications", label: "Alerts", icon: Bell },
   { to: "/profile", label: "Profile", icon: User },
-] as const;
+];
 
 export function MobileShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
